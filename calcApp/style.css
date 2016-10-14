@@ -109,7 +109,8 @@ table {
 
 }
 
-@media (min-width: 1025px) {
+/*@media (min-width: 1025px) {*/
+@media only screen and (min-device-width: 800px) {
   #container {
     display: flex;
     flex-direction: row;
