@@ -89,7 +89,6 @@ table {
   margin-bottom: 10px;
 }
 #calcContent {
-  width: 100%;
   margin-bottom: 10px;
 }
 #sideContent {
@@ -110,7 +109,7 @@ table {
 
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   #container {
     display: flex;
     flex-direction: row;
