@@ -1,119 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    /* http://meyerweb.com/eric/tools/css/reset/
-       v2.0 | 20110126
-       License: none (public domain)
-    */
-
-    html, body, div, span, applet, object, iframe,
-    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-    a, abbr, acronym, address, big, cite, code,
-    del, dfn, em, img, ins, kbd, q, s, samp,
-    small, strike, strong, sub, sup, tt, var,
-    b, u, i, center,
-    dl, dt, dd, ol, ul, li,
-    fieldset, form, label, legend,
-    table, caption, tbody, tfoot, thead, tr, th, td,
-    article, aside, canvas, details, embed,
-    figure, figcaption, footer, header, hgroup,
-    menu, nav, output, ruby, section, summary,
-    time, mark, audio, video {
-    	margin: 0;
-    	padding: 0;
-    	border: 0;
-    	font-size: 100%;
-    	font: inherit;
-    	vertical-align: baseline;
-    }
-    /* HTML5 display-role reset for older browsers */
-    article, aside, details, figcaption, figure,
-    footer, header, hgroup, menu, nav, section {
-    	display: block;
-    }
-    body {
-    	line-height: 1;
-    }
-    ol, ul {
-    	list-style: none;
-    }
-    blockquote, q {
-    	quotes: none;
-    }
-    blockquote:before, blockquote:after,
-    q:before, q:after {
-    	content: '';
-    	content: none;
-    }
-    table {
-    	border-collapse: collapse;
-    	border-spacing: 0;
-    }
-    body {
-      background: -moz-linear-gradient(top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-      background: -webkit-linear-gradient(top, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-      background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
-    }
-
-    #container {
-      margin: 0;
-      padding: 0;
-      background-image: url(http://2.bp.blogspot.com/-et2zQUqNYNI/UTPEsvZDYfI/AAAAAAAAEog/j885ciZS5O4/s1600/Advertsmall.JPG);
-      background-size: 450px;
-      background-repeat: no-repeat;
-      background-position: right top;
-      min-height: 900px;
-    }
-    #calcBackdrop {
-      width: 68%;
-      margin-top: 20%;
-    }
-    #calculator {
-      margin: auto;
-      background-color: silver;
-      width: 200px;
-    }
-  </style>
+  <link href="style.css" rel="stylesheet">
 </head>
 <body>
 
 <div id="container">
-<div id="calcBackdrop">
-  <div id="calculator">
-    <form name="calculator">
-      <table>
-        <tr>
-          <td colspan=4><input type="text" Name="screen"></td>
-        </tr>
-        <tr>
-          <td colspan=3><input type="button" value="CE" onClick="calculator.screen.value=''"></td>
-          <td><input type="button" value="/" onClick="calculator.screen.value+='/'"></td>
-        </tr>
-        <tr>
-          <td><input type="button" value="7" onClick="calculator.screen.value+='7'"></td>
-          <td><input type="button" value="8" onClick="calculator.screen.value+='8'"></td>
-          <td><input type="button" value="9" onClick="calculator.screen.value+='9'"></td>
-          <td><input type="button" value="x" onClick="calculator.screen.value+='*'"></td>
-        </tr>
-        <tr>
-          <td><input type="button" value="6" onClick="calculator.screen.value+='6'"></td>
-          <td><input type="button" value="5" onClick="calculator.screen.value+='5'"></td>
-          <td><input type="button" value="4" onClick="calculator.screen.value+='4'"></td>
-          <td><input type="button" value="+" onClick="calculator.screen.value+='+'"></td>
-        </tr>
-        <tr>
-          <td><input type="button" value="3" onClick="calculator.screen.value+='3'"></td>
-          <td><input type="button" value="2" onClick="calculator.screen.value+='2'"></td>
-          <td><input type="button" value="1" onClick="calculator.screen.value+='1'"></td>
-          <td><input type="button" value="=" onClick="calculator.screen.value=eval(calculator.screen.value)"></td>
-        </tr>
-      </table>
-    </form>
-  </div>
-</div>
-</div>
 
+  <div id="mainContent">
+    <h1>Title</h1>
+    <p>Some text content</p>
+  </div>
+
+  <div id="calcContent">
+    <div id="calculator">
+      <form name="calculator">
+        <table>
+          <tr>
+            <td colspan=4><input type="text" Name="screen"></td>
+          </tr>
+          <tr>
+            <td colspan=3><input type="button" value="CE" onClick="calculator.screen.value=''"></td>
+            <td><input type="button" value="/" onClick="calculator.screen.value+='/'"></td>
+          </tr>
+          <tr>
+            <td><input type="button" value="7" onClick="calculator.screen.value+='7'"></td>
+            <td><input type="button" value="8" onClick="calculator.screen.value+='8'"></td>
+            <td><input type="button" value="9" onClick="calculator.screen.value+='9'"></td>
+            <td><input type="button" value="x" onClick="calculator.screen.value+='*'"></td>
+          </tr>
+          <tr>
+            <td><input type="button" value="6" onClick="calculator.screen.value+='6'"></td>
+            <td><input type="button" value="5" onClick="calculator.screen.value+='5'"></td>
+            <td><input type="button" value="4" onClick="calculator.screen.value+='4'"></td>
+            <td><input type="button" value="+" onClick="calculator.screen.value+='+'"></td>
+          </tr>
+          <tr>
+            <td><input type="button" value="3" onClick="calculator.screen.value+='3'"></td>
+            <td><input type="button" value="2" onClick="calculator.screen.value+='2'"></td>
+            <td><input type="button" value="1" onClick="calculator.screen.value+='1'"></td>
+            <td><input type="button" value="=" onClick="calculator.screen.value=eval(calculator.screen.value)"></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+
+
+  <div id="sideContent">
+    <h1>Title</h1>
+    <p>Some text content</h1>
+  </div>
+
+</div>
 </body>
 </html>
