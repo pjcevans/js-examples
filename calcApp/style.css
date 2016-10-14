@@ -89,8 +89,6 @@ table {
   margin-bottom: 10px;
 }
 #calcContent {
-  display: flex;
-  flex-direction: column;
   margin-bottom: 10px;
 }
 #sideContent {
@@ -99,6 +97,7 @@ table {
   background-position: center top;
   background-size: 450px;
   min-height: 800px;
+  flex: 1;
 
 }
 #calculator {
@@ -110,7 +109,7 @@ table {
 
 }
 
-@media (min-width: 769px) {
+@media (min-width: 768px) {
   #container {
     display: flex;
     flex-direction: row;
