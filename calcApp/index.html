@@ -16,15 +16,15 @@
       <p>More information available in this <a href="#">blog post</a> & code is available in the <a href="https://github.com/pjcevans/js-examples/tree/master/calcApp">GitHub repo</a></p>
     </div>
     <div id="calculator">
-      <h1>FORM CALCULATOR</h1>
+      <h2>FORM CALCULATOR</h2>
       <p>PATENT APPLIED FOR</p>
       <form name="calculator">
         <table>
           <tr>
-            <td colspan=4><input type="text" Name="screen"></td>
+            <td colspan=4><input type="text" Name="screen" id="screen"></td>
           </tr>
           <tr>
-            <td colspan=3><input type="button" value="CE" onClick="calculator.screen.value=''"></td>
+            <td colspan=3><input class="wideButton" type="button" value="CE" onClick="calculator.screen.value=''"></td>
             <td><input type="button" value="/" onClick="calculator.screen.value+='/'"></td>
           </tr>
           <tr>
