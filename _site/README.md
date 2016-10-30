@@ -1,0 +1,1 @@
+This repo collects a series of exercises whose brief is laid out by [Free Code Camp](freecodecamp.com). None of these exercises represent step by step tutorials and all examples herein are constructed from scratch.
