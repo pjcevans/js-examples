@@ -127,11 +127,13 @@ var showQuote = function() {
       var display = document.getElementById("screen");
       var tweet = document.getElementById("hiddenTweet");
       var twitterButton = document.getElementById("twitterButton");
-      tweet.value = data.quote; // Hold this in an invisibile input field (as non-input being used for better display style)
+      var text = data.quote;
+      tweet.value = text; // Hold this in an invisibile input field (as non-input being used for better display style)
       display.style.opacity = 0;
-      display.innerHTML = data.quote; // display the result in an HTML element
+      display.innerHTML = text; // display the result in an HTML element
       display.style.opacity = 1;
-      twitterButton.href = "http://twitter.com/home?status=" + data.quote;
+      text = text.replace( /;/g, "%3B" ); // Handle semicolons in the quote, without this it is treated as a URI seperator
+      twitterButton.href = "http://twitter.com/home?status=" + text;
   }, function(status) { // alert error on rejection:
     alert('Something went wrong.');
   });

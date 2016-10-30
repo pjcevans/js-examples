@@ -71,6 +71,12 @@
   .button:focus {
     outline: none;
   }
+
+  #twitterButton {
+    font-size: 14px;
+    color:white;
+    text-decoration: none;
+  }
   </style>
 </head>
 <body>
@@ -95,7 +101,7 @@
 </div>
 
 <div class="marginTop">
-  <td><input class="button" type="button" value="Share on Twitter" onClick="location.href='http://twitter.com/home?status=' + quotebox.screen.value"></td>
+  <td><p class="button"><a id="twitterButton" href="#" target="_blank">Share on Twitter</a></td>
 </div>
 
 <script>
@@ -120,10 +126,14 @@ var showQuote = function() {
   getJSON('https://jsonp.afeld.me/?url=http://quotes.stormconsultancy.co.uk/random.json').then(function(data) { // on fullfilled:
       var display = document.getElementById("screen");
       var tweet = document.getElementById("hiddenTweet");
-      tweet.value = data.quote; // Hold this in an invisibile input field (as non-input being used for better display style)
+      var twitterButton = document.getElementById("twitterButton");
+      var text = data.quote;
+      tweet.value = text; // Hold this in an invisibile input field (as non-input being used for better display style)
       display.style.opacity = 0;
-      display.innerHTML = data.quote; // display the result in an HTML element
+      display.innerHTML = text; // display the result in an HTML element
       display.style.opacity = 1;
+      text = text.replace( /;/g, "%3B" ); // Handle semicolons in the quote, without this it is treated as a URI seperator
+      twitterButton.href = "http://twitter.com/home?status=" + text;
   }, function(status) { // alert error on rejection:
     alert('Something went wrong.');
   });
