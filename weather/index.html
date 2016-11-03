@@ -125,7 +125,7 @@ var setC = function() {
 // Get data from open weather API and add to page
 var getWeather = function(lat, lon) {
   getJSON('https://crossorigin.me/http://api.openweathermap.org/data/2.5/weather?APPID=3312572de01ed2a87f7fbc8797dca046&units=metric&lat=' + lat + "&lon=" + lon).then(function(data) { // on fullfilled:
-    var location = document.getElementById("location");
+    var location = document.getElementById("locati  on");
     var temperature = document.getElementById("temperature");
     var weather = document.getElementById("weather");
     var icon = document.getElementById("icon");
