@@ -124,7 +124,7 @@ var setC = function() {
 }
 // Get data from open weather API and add to page
 var getWeather = function(lat, lon) {
-  getJSON('http://api.openweathermap.org/data/2.5/weather?APPID=3312572de01ed2a87f7fbc8797dca046&units=metric&lat=' + lat + "&lon=" + lon).then(function(data) { // on fullfilled:
+  getJSON('https://crossorigin.me/http://api.openweathermap.org/data/2.5/weather?APPID=3312572de01ed2a87f7fbc8797dca046&units=metric&lat=' + lat + "&lon=" + lon).then(function(data) { // on fullfilled:
     var location = document.getElementById("location");
     var temperature = document.getElementById("temperature");
     var weather = document.getElementById("weather");
@@ -143,8 +143,8 @@ var getWeather = function(lat, lon) {
 document.addEventListener("DOMContentLoaded", function(event) {
   // Get location data from API & get + post weather data
   function getLocation() {
-    var data = getJSON('http://ip-api.com/json').then(function(data) {
-      getWeather(data.lat, data.lon);
+    var data = getJSON('https://freegeoip.net/json/').then(function(data) {
+      getWeather(data.latitude, data.longitude);
     });
     /* navigator.geolocation no longer supported over http (only https) and so not suitable for CodePen
       if (navigator.geolocation) {
