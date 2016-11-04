@@ -29,7 +29,7 @@
     background-position: center top;
   }
 
-  #container div {
+  #container > div {
     margin-top: 2%;
   }
 
@@ -73,30 +73,64 @@
     margin-top: 0px;
     font-size: 14px;
   }
+
+  #textBlock {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  #textBlock > a {
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+    opacity: 0.6;
+    transition: 0.7s ease-in-out;
+    width: 45%;
+    margin: 5px;
+    word-wrap: break-word;
+    padding: 5px;
+  }
+  #textBlock > a:hover {
+    opacity: 0.9;
+    transition: 0.7s ease-in-out;
+  }
+  @media (min-width: 768px) {
+    #textBlock > a {
+      width: 15%;
+    }
+  }
   </style>
 </head>
 <body>
 <div id="container">
+
   <div id="titleBlock">
     <h3>Astounding Wikipedia Viewer</h3>
-    <p class="metadata">Making us of the API courtesy of https://en.wikipedia.org</p>
+    <p class="metadata">Making use of the API courtesy of https://en.wikipedia.org</p>
   </div>
 
-  <div>
-    <div id="location">
-    </div>
-    <div id="temperature">
-    </div>
-    <div id="weather">
-    </div>
-    <div id="icon">
-    </div>
+
+  <div id="randomBlock">
+    <button class="button" onClick="window.location.href = 'https://en.wikipedia.org/wiki/Special:Random'">Random Article</button>
   </div>
+  <div id="searchBlock">
+    <form name="searchform">
+      <table>
+        <tr>
+          <td><input type="text" name="searchbox" id="searchbox" placeholder="Search Wikipedia"></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div id="textBlock">
+  </div>
+
+
 </div>
-
 </body>
 <script>
-// Make an API request based on the given URL
+
 var getJSON = function(url) {
   return new Promise(function(resolve, reject) {
     var xhr = new XMLHttpRequest();
@@ -114,14 +148,49 @@ var getJSON = function(url) {
   });
 };
 
-// Get data from open weather API and add to page
-var getRandom = function(lat, lon) {
-  getJSON('#').then(function(data) { // on fullfilled:
+var searchWikipedia = function(text) {
+  getJSON('https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&titles=Main+Page&srlimit=20&srwhat=text&srprop=size%7Cwordcount%7Ctimestamp%7Csnippet%7Ctitlesnippet&srsearch=' + text).then(function(data) { // on fullfilled:
+    var target = document.getElementById("textBlock");
+    data.query.search.forEach(function(item){
+      var link = document.createElement("a");
+      link.href="https://en.wikipedia.org/wiki/" + item.title.replace(/ /, "_");
+      var itemDiv = document.createElement("div");
+      var title = document.createElement("h3");
+      title.innerHTML = item.title;
+      var snippet = document.createElement("p");
+      snippet.innerHTML = item.snippet + "...";
 
+      itemDiv.appendChild(title);
+      itemDiv.appendChild(snippet);
+      link.appendChild(itemDiv);
+      target.appendChild(link);
+    });
   }, function(status) { // alert error on rejection:
     alert('Something went wrong.');
   });
 };
+// Make an API request based on the given URL
+document.getElementById('searchbox').onkeydown = function(event) {
+    if (event.keyCode == 13) {
+      var block = document.getElementById("textBlock");
+      while (block.firstChild) {
+        block.removeChild(block.firstChild);
+      }
+      searchWikipedia(searchform.searchbox.value);
+      event.preventDefault();
+    }
+}
+
+// Random wiki page
+// var getRandom = function(lat, lon) {
+//   getJSON('#').then(function(data) { // on fullfilled:
+//
+//   }, function(status) { // alert error on rejection:
+//     alert('Something went wrong.');
+//   });
+// };
+// Get data from wikipedia API based on search terms
+
 
 </script>
 </hmtl>
