@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,12 +30,6 @@
 
   #container > div {
     margin-top: 2%;
-  }
-
-  #temperature, #weather, .loc {
-    padding: 10px;
-    font-size: 1.8em;
-    font-family: fantasy;
   }
 
   h3 {
@@ -110,8 +103,8 @@ var getJSON = function(url) {
   });
 };
 
-var getTwitch = function(text) {
-  getJSON('https://crossorigin.me/https://wind-bow.hyperdev.space/twitch-api/channels/test_channel').then(function(data) { // on fullfilled:
+var getTwitch = function(link) {
+  getJSON(link).then(function(data) { // on fullfilled:
     var target = document.getElementById("textBlock");
     var text = document.createElement("div");
     text.innerHTML = data;
@@ -123,7 +116,7 @@ var getTwitch = function(text) {
 };
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  getTwitch();
+  getTwitch('https://crossorigin.me/https://wind-bow.hyperdev.space/twitch-api/streams/ESL_SC2');
 });
 
 
