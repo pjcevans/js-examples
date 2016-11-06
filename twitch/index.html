@@ -104,10 +104,21 @@ var getJSON = function(url) {
 };
 
 var getTwitch = function(link) {
-  getJSON(link).then(function(data) { // on fullfilled:
+  getJSON('https://crossorigin.me/https://wind-bow.hyperdev.space/twitch-api/streams/'+ link).then(function(data) { // on fullfilled:
     var target = document.getElementById("textBlock");
     var text = document.createElement("div");
-    text.innerHTML = data;
+    var title = document.createElement("h3");
+    var status = document.createElement("p");
+    title.innerHTML = link;
+    text.appendChild(title);
+
+    if (data.stream) { // If the stream is online
+      status.innerHTML = data.stream.channel.status;
+    } else { // If the steam is offline
+      status.innerHTML = "Offline";
+    }
+
+    text.appendChild(status);
     target.appendChild(text);
 
   }, function(status) { // alert error on rejection:
@@ -116,7 +127,8 @@ var getTwitch = function(link) {
 };
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  getTwitch('https://crossorigin.me/https://wind-bow.hyperdev.space/twitch-api/streams/ESL_SC2');
+  getTwitch('ESL_SC2');
+  getTwitch('freecodecamp');
 });
 
 
