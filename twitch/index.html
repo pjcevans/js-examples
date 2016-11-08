@@ -32,12 +32,7 @@
     margin-top: 2%;
   }
 
-  h3 {
-    margin-bottom: 5px;
-  }
-  form {
-    max-width: 70%;
-  }
+
   a {
   color: #3c903f;
   text-decoration: none;
@@ -66,17 +61,63 @@
     margin-top: 0px;
     font-size: 14px;
   }
+  #textBlock {
+    display: flex;
+    flex-direction: column;
+  }
+  .twitchItem {
+    display: flex;
+    flex-direction: row;
+    /* background: #000033; */
+    
+    background-color: #004e92; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #004e92 , #000428); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #004e92 , #000428); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+    margin: 7px;
+    border-radius: 10px;
+  }
+  .twitchStatus {
+    color: white;
+    margin:auto;
+  }
+  .twitchIcon {
+    width: 60px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    border-radius: 10px 0px 0px 10px;
+  }
+  .twitchTitle {
+    width: 200px;
+  }
+  .twitchStatus {
+    padding-right: 15px;
+  }
+  #loadingBlock {
+    display: flex;
+    flex-direction: row;
+  }
+  #loadingBlock img {
+    width: 40px;
+    height: 40px;
+  }
+  #loadingBlock h3 {
+    padding-right: 15px;
+  }
   </style>
 </head>
 <body>
 <div id="container">
 
   <div id="titleBlock">
-    <h3>Superior Twitch Status app</h3>
+    <h2>Superior Twitch Status app</h3>
     <p class="metadata">Using the twich API via a cached proxy courtesy of Free Code Camp https://wind-bow.hyperdev.space/twitch-api</p>
   </div>
 
+  <div id="loadingBlock">
+    <h3>Loading Twitch channels</h3><img src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif">
+  </div>
 
   <div id="textBlock">
   </div>
@@ -103,32 +144,75 @@ var getJSON = function(url) {
   });
 };
 
-var getTwitch = function(link) {
-  getJSON('https://crossorigin.me/https://wind-bow.hyperdev.space/twitch-api/streams/'+ link).then(function(data) { // on fullfilled:
-    var target = document.getElementById("textBlock");
-    var text = document.createElement("div");
-    var title = document.createElement("h3");
-    var status = document.createElement("p");
-    title.innerHTML = link;
-    text.appendChild(title);
+var getTwitch = function(link, channel) {
+    getJSON('https://crossorigin.me/https://wind-bow.hyperdev.space/twitch-api/streams/'+ link).then(function(data) { // on fullfilled:
+      // Create elements and add content
+      var target = document.getElementById("textBlock");
+      var text = document.createElement("div"); // Create an element to add
+      text.className += "twitchItem";           // Add a class name to new element
+      var icon = document.createElement("div");
+      icon.id = link;
+      icon.className += "twitchIcon";
 
-    if (data.stream) { // If the stream is online
-      status.innerHTML = data.stream.channel.status;
-    } else { // If the steam is offline
-      status.innerHTML = "Offline";
-    }
 
-    text.appendChild(status);
-    target.appendChild(text);
+      var title = document.createElement("h3");
+      title.className += "twitchTitle";
+      title.innerHTML = link;                // Add content to new element
+      var status = document.createElement("a");
+      status.className += "twitchStatus";
+      status.href = "https://www.twitch.tv/" + link;
+      if (!data._links) {
+        status.innerHTML = data.message;
+        text.appendChild(icon);
+        icon.style.backgroundImage = "url('https://comm663.files.wordpress.com/2012/10/taboos2.jpg')";
+        text.appendChild(title);
+        text.appendChild(status);
+        target.appendChild(text);
+        return;
+      }
 
+      // Append content items to the content segment
+      text.appendChild(icon);
+      text.appendChild(title);
+      if (data.stream) { // If the stream is online
+        icon.style.backgroundImage = "url(" + data.stream.channel.logo + ")";
+        status.innerHTML = data.stream.channel.status;
+      } else { // If the steam is offline
+        status.innerHTML = "Offline";
+        getChannel(link);
+      }
+      text.appendChild(status);
+      target.appendChild(text);
+
+    }, function(status) { // alert error on rejection:
+      alert('Something went wrong.');
+    });
+};
+
+var getChannel = function(link) {
+  getJSON('https://crossorigin.me/https://wind-bow.hyperdev.space/twitch-api/channels/'+ link).then(function(data) { // on fullfilled:
+    var iconTarget = document.getElementById(link);
+    iconTarget.style.backgroundImage = "url(" + data.logo + ")";
+    return data;
   }, function(status) { // alert error on rejection:
     alert('Something went wrong.');
   });
-};
+}
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  getTwitch('ESL_SC2');
-  getTwitch('freecodecamp');
+  var streams = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "comster404"];
+
+  streams.forEach(function(item){
+    getTwitch(item);
+  });
+  var target = document.getElementById("loadingBlock");
+  target.style.display = "none";
+
+  // getTwitch('ESL_SC2');
+  // getTwitch('freecodecamp');
+  // console.log(getTwitch('comster404'));
+  // getTwitch('brunofin');
+
 });
 
 
