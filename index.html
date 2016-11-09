@@ -1,0 +1,8 @@
+---
+layout: default
+---
+<ul>
+{% for page in site.pages %}
+<li><a href="{{page.url | prepend: site.url}}">{{page.title}}</a</li>
+{% endfor %}
+</ul>
