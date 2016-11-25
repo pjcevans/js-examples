@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+  body {
+    margin: 0px;
+  }
+  #container {
+    text-align: center;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: large;
+    margin: 0px;
+    padding: 0px;
+    color: #D5D5D5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 800px;
+    background-image: url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/cartographer.png')
+  }
+
+
+  h3, h4 {
+    padding: 0px;
+    margin: 10px;
+    margin-bottom: 5px;
+  }
+
+
+  .centered {
+    margin: auto;
+  }
+
+  .highlight {
+    font-size: 1.4em;
+  }
+  .hidden {
+    display: none;
+  }
+
+
+  #titleBlock {
+    text-align: center;
+  }
+
+  #optionsBlock {
+    display: flex;
+  }
+  #optionsBlock div {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  #optionsBlock div ul {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+  }
+  #optionsBlock a {
+    font-size: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: green;
+
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select:none;
+    user-select:none;
+    -o-user-select:none;
+
+  }
+  #optionsBlock a:hover {
+    cursor: pointer;
+  }
+  #clockBlock {
+    display: flex;
+    flex-direction: column;
+    border-radius: 100%;
+    background: green;
+    border: thin dotted gray;
+
+    width: 150px;
+    height: 150px;
+
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 30px;
+    text-shadow: -1.5px 0 black, 0 1.5px black, 1.5px 0 black, 0 -1.5px black;
+  }
+  #clockBlock p:last-child {
+    align-self: flex-end;
+  }
+  .metadata {
+    color: gray;
+    margin-top: 0px;
+    font-size: 14px;
+  }
+
+  </style>
+</head>
+<body>
+  <div id="container">
+
+    <div id="titleBlock">
+      <h3>Pomodoro Timer</h3>
+      <p class="metadata">A customisable app for timing pomodoro working periods and breaks</p>
+    </div>
+
+    <div id="optionsBlock">
+      <div>
+        <h4 id="pomodoroDuration">Set pomodoro duration</h4>
+        <ul>
+          <li onClick="incrementPomodoro(document.querySelector('#clockBlock'))"><a>+</a></li>
+          <li onClick="decrementPomodoro(document.querySelector('#clockBlock'))"><a>-</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 id="restDuration">Set break duration</h4>
+        <ul>
+          <li onClick="incrementRest(document.querySelector('#clockBlock'))"><a>+</a></li>
+          <li onClick="decrementRest(document.querySelector('#clockBlock'))"><a>-</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="clockBlock" onClick="startTimer(document.querySelector('#clockBlock'))">
+    </div>
+    <div id="statusBlock">Paused</div>
+
+  </div>
+<script>
+
+/**
+ * Global variables used to track state and manage the clock, for anything
+ * beyond proof of concept these should be moved out of the global scope.
+ */
+var pomodoro = 1500;
+var rest = 300;
+var timerStopped = true;
+var isPomodoro = true
+var timer;
+var minutes;
+var seconds;
+
+/**
+ * This function provides the mean ticking functionality when called it will
+ * start the clock if it is not already started. Extra handling is required as
+ * the function may be called either from within functions or as an on click
+ * event. This is because a timer has to be started or stopped when the timer
+ * is clicked *and* be started automatically when a new type of timer is started
+ * (the rest timer should automatically start when the pomodoro timer starts
+ * etc.)
+ */
+function startTimer(display) {
+  if (timerStopped === false) {
+    timerStopped = true;
+    updateStatus("Paused")
+  } else if (timerStopped === true) {
+    if (isPomodoro) {
+      updateStatus("Pomodoro!")
+    } else {
+      updateStatus("Rest :D")
+    }
+    timerStopped = false;
+    var ticker = setInterval(function () {
+      if(timerStopped) {
+        clearInterval(ticker);
+      }
+      minutes = parseInt(timer / 60, 10);
+      seconds = parseInt(timer % 60, 10);
+
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      display.innerHTML = minutes + ":" + seconds;
+      if (--timer < 0) {
+          if (isPomodoro) {
+            clearInterval(ticker)
+            timerStopped = true;
+            isPomodoro = false;
+            setTimer(rest, display, "rest");
+            startTimer(display);
+          } else {
+            clearInterval(ticker)
+            timerStopped = true;
+            isPomodoro = true;
+            setTimer(pomodoro, display, "pomodoro")
+            startTimer(display);
+          }
+      }
+    }, 1000);
+  }
+}
+
+/**
+ * This timer sets the state of the current timer based on a given time,
+ * location and type (pomodoro/rest)
+ */
+function setTimer(duration, display, type) {
+  timer = duration;
+  minutes = parseInt(timer / 60, 10);
+  seconds = parseInt(timer % 60, 10);
+  // If down to single digit minutes format as eg 01:45 for neatness
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+  display.innerHTML = minutes + ":" + seconds;
+  if (type === "pomodoro") {
+    updateStatus("Pomodoro!");
+    updateStyles(display, "pomodoro");
+  } else {
+    updateStatus("Rest :D");
+    updateStyles(display, "rest");
+    }
+}
+
+/**
+ * This function changes site styles based on the current timer
+ */
+function updateStyles(display, type) {
+  if (type === "pomodoro") {
+    display.style.background = "red";
+  } else {
+    display.style.background = "green";
+  }
+}
+
+/**
+ * These functions provide on click functionality for adjusting the timers
+ */
+function incrementPomodoro(display) {
+  isPomodoro = true;
+  timerStopped = true;
+  pomodoro += 60;
+  updateCounts();
+  setTimer(pomodoro, display, "pomodoro")
+}
+
+function decrementPomodoro(display) {
+  isPomodoro = true;
+  timerStopped = true;
+  if (pomodoro > 60) {
+   pomodoro -= 60;
+   updateCounts();
+   setTimer(pomodoro, display, "pomodoro")
+  }
+}
+
+function incrementRest(display) {
+  isPomodoro = false;
+  timerStopped = true;
+  rest += 60;
+  updateCounts();
+  setTimer(rest, display, "rest")
+}
+
+function decrementRest(display) {
+  isPomodoro = false;
+  timerStopped = true;
+   if (rest > 60) {
+     rest -= 60;
+     updateCounts();
+     setTimer(rest, display, "rest")
+   }
+}
+
+/**
+ * This function updates the page based on the rest and pomodoro global variables
+ */
+function updateCounts() {
+  //
+  var pomodoroDuration = document.querySelector('#pomodoroDuration');
+  var restDuration = document.querySelector('#restDuration');
+  if (pomodoro === 60) { // handling for single minute cases
+    pomodoroDuration.innerHTML = "Pomodoro Duration: " + parseInt(pomodoro / 60, 10) + " minute";
+  } else {
+    pomodoroDuration.innerHTML = "Pomodoro Duration: " + parseInt(pomodoro / 60, 10) + " minutes";
+  }
+  if (rest === 60) { // handling for single minute cases
+    restDuration.innerHTML = "Rest Duration: " + parseInt(rest / 60, 10) + " minute";
+  } else {
+    restDuration.innerHTML = "Rest Duration: " + parseInt(rest / 60, 10) + " minutes";
+  }
+}
+
+/**
+ * This function manages the "Paused" / "Pomodoro!" etc status bar beneath the
+ * main pomodoro timer
+ */
+function updateStatus(message) {
+  var status = document.querySelector('#statusBlock');
+  statusBlock.innerHTML = message;
+}
+
+/**
+ * This function sets up the initial timer on page load
+ */
+window.onload = function () {
+    // var startingTimer = 60 * 25;
+    var startingTimer = pomodoro;
+    var display = document.querySelector('#clockBlock');
+    updateCounts();
+    setTimer(startingTimer, display, "pomodoro");
+};
+
+</script>
+
+</body>
+
+</hmtl>
